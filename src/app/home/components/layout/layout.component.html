@@ -1,0 +1,76 @@
+<mat-toolbar>
+    <span> Tienda Online</span>
+
+    <button mat-button routerLink="/" class="ms-3">
+        Inicio
+    </button>
+
+    <button mat-button routerLink="/books" class="ms-3">
+        Productos
+    </button>
+
+    <!-- <button mat-button routerLink="/admin/books" class="ms-3" *ngIf="user?.role === 'ADMIN'">
+        Administración
+    </button> -->
+
+    <span class="spacer"></span>
+
+    <button mat-icon-button [matMenuTriggerFor]="cartMenu" [matBadge]="items.length">
+        <mat-icon>shopping_cart</mat-icon>
+    </button>
+
+    <mat-menu #cartMenu="matMenu">
+        <ng-container *ngIf="items.length > 0; else noItems">
+            <button mat-menu-item *ngFor="let book of items" class="cart-items">
+
+                <div class="d-flex gap-2">
+                    <img [src]="book.coverPath! | apiImg" alt="" class="mw-64px">
+
+                    <div class="info">
+                        <div class="fw-bold mb-1">
+                            {{ book.title }}
+                        </div>
+                        <p>
+                            {{ book.price |  currency }}
+                        </p>
+                    </div>
+                </div>
+
+            </button>
+
+            <button mat-menu-item class="justify-content-center" routerLink="/cart">
+                Ir al carrito
+            </button>
+        </ng-container>
+
+        <ng-template #noItems>
+            <button mat-menu-item class="justify-content-center">
+                El carrito está vacío
+            </button>
+        </ng-template>
+    </mat-menu>
+
+    <ng-container *ngIf="user; else authButtons">
+        <button mat-button [matMenuTriggerFor]="userMenu">
+            <mat-icon>account_circle</mat-icon> {{ user.firstName }}
+        </button>
+
+        <mat-menu #userMenu>
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon> Cerrar sesión
+            </button>
+        </mat-menu>
+    </ng-container>
+
+    <ng-template #authButtons>
+        <button mat-button class="ms-2" routerLink="/auth/login">
+            Iniciar sesión
+        </button>
+        <button mat-raised-button color="primary" class="ms-2" routerLink="/auth/signup">
+            Registarme
+        </button>
+    </ng-template>
+
+</mat-toolbar>
+
+<router-outlet></router-outlet>

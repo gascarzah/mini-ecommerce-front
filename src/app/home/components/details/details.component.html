@@ -1,0 +1,89 @@
+<div *ngIf="form" class="d-flex  justify-content-center">
+
+
+
+  <div class="row  w-75 mt-4">
+    <h1 class="">
+      Detalle Producto
+  </h1>
+      <div class="col-md-8 ">
+          <form class="mt-5" [formGroup]="form" (ngSubmit)="save()" autocomplete="off">
+              <mat-form-field class="mb-3 w-100" appearance="outline"
+              >
+                  <mat-label for="title">Título</mat-label>
+
+                  <input matInput id="title" type="text" placeholder="Título" formControlName="title" readonly="true">
+
+              </mat-form-field>
+
+              <mat-form-field class="mb-3 w-100" appearance="outline">
+                  <mat-label for="slug">Slug</mat-label>
+                  <input matInput id="slug" type="text" placeholder="Slug" formControlName="slug">
+
+              </mat-form-field>
+
+              <mat-form-field class="mb-3 w-100" appearance="outline">
+                  <mat-label for="descripcion">Descripción</mat-label>
+                  <textarea matInput id="descripcion" placeholder="Descripción" formControlName="desc"></textarea>
+
+              </mat-form-field>
+
+              <mat-form-field class="mb-2 w-100" appearance="outline">
+                  <mat-label for="precio">Precio</mat-label>
+                  <input matInput id="precio" type="number" step="0.01" placeholder="Precio" formControlName="price">
+
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="mb-2 w-100">
+                <mat-label for="category">Categoria</mat-label>
+                <mat-select id="category" placeholder="Selecciona categoria " formControlName="category" [(value)]="selectedCategory"
+                [compareWith]="objectComparisonFunction">
+
+                  <mat-option *ngFor="let category of categories" [value]="category.id">
+                    {{category.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+          </form>
+      </div>
+
+      <div class="col-md-4 text-center">
+          <div *ngIf="form.controls['coverPath'].value; else noCoverPathMessage">
+              <div>Portada</div>
+              <img [src]="form.controls['coverPath'].value | apiImg" alt=""
+                  class="img-thumbnail">
+          </div>
+          <ng-template #noCoverPathMessage>
+              Sin portada
+          </ng-template>
+      </div>
+      <div class="mt-0">
+        <h2>Productos relacionados</h2>
+      <div id="carouselExampleAutoplaying" class="carousel  " data-bs-ride="carousel">
+        <div class="carousel-inner w-100">
+          <div *ngFor="let rel of books; index as i" >
+
+          <div  class="carousel-item {{i === 0 && rel.id != book?.id ? 'active': ''}} ">
+            <img src="http://localhost:8080/api/media/{{rel.coverPath}}" class="d-block vista-carrousel" alt="...">
+          </div>
+
+        </div>
+          <!-- <div class="carousel-item w-30 h-30">
+            <img src="http://localhost:8080/api/media/1.jpg" class="d-block vista-carrousel " alt="...">
+          </div>
+          <div class="carousel-item w-30 h-30">
+            <img src="http://localhost:8080/api/media/3.jpg" class="d-block vista-carrousel" alt="...">
+          </div> -->
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
